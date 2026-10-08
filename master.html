@@ -1,99 +1,60 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2775.1">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  <title>OSCE Master Controller</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <style>
+    body { font-family: sans-serif; text-align: center; margin-top: 50px; background: #f4f4f9; }
+    button { padding: 15px 20px; margin: 10px; font-size: 16px; cursor: pointer; border-radius: 5px; border: none; }
+    .phase-btn { background: #007bff; color: white; }
+    .action-btn { background: #28a745; color: white; }
+    #requests { margin-top: 30px; color: #dc3545; font-weight: bold; font-size: 1.2rem; padding: 15px; }
   </style>
 </head>
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;OSCE Master Controller&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"&gt;&lt;/script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"&gt;&lt;/script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>body { font-family: sans-serif; text-align: center; margin-top: 50px; background: #f4f4f9; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>button { padding: 15px 20px; margin: 10px; font-size: 16px; cursor: pointer; border-radius: 5px; border: none; transition: 0.2s; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>button:hover { opacity: 0.9; transform: scale(1.02); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.phase-btn { background: #007bff; color: white; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.action-btn { background: #28a745; color: white; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>#requests { margin-top: 30px; color: #dc3545; font-weight: bold; font-size: 1.2rem; padding: 15px; }</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;h1&gt;OSCE Master Control&lt;/h1&gt;</p>
-<p class="p2"><span class="Apple-converted-space">  </span></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="controls"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="phase-btn" onclick="startPhase('Reading', 2)"&gt;Start Reading (2m)&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="phase-btn" onclick="startPhase('Session', 8)"&gt;Start Session (8m)&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="phase-btn" onclick="startPhase('Feedback', 2)"&gt;Start Feedback (2m)&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="phase-btn" onclick="startPhase('Moving', 1.5)"&gt;Start Moving (1.5m)&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p2"><span class="Apple-converted-space">  </span></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;hr style="margin: 30px auto; width: 80%; border-top: 1px solid #ccc;"&gt;</p>
-<p class="p2"><span class="Apple-converted-space">  </span></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;button class="action-btn" onclick="addExtraTime(30)"&gt;Approve +30s Extra Time&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;button class="action-btn" style="background:#dc3545;" onclick="stopTimer()"&gt;Stop / Reset&lt;/button&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="requests"&gt;No extra time requests.&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const firebaseConfig = {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>apiKey: "AIzaSyC1YUuGjJtPfKoUvjg3oZ9KWg2qiMCg5Ec",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>authDomain: "osce-timer-75bc3.firebaseapp.com",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>databaseURL: "https://osce-timer-75bc3-default-rtdb.asia-southeast1.firebasedatabase.app",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>projectId: "osce-timer-75bc3",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>storageBucket: "osce-timer-75bc3.firebasestorage.app",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>messagingSenderId: "1074792422880",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>appId: "1:1074792422880:web:893bd949b3e610b021df85",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>measurementId: "G-00NQP07LE2"</p>
-<p class="p1"><span class="Apple-converted-space">    </span>};</p>
-<p class="p1"><span class="Apple-converted-space">    </span>firebase.initializeApp(firebaseConfig);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const db = firebase.database().ref('osce_timer');</p>
-<p class="p2"><span class="Apple-converted-space">    </span></p>
-<p class="p1"><span class="Apple-converted-space">    </span>let serverOffset = 0;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>firebase.database().ref('.info/serverTimeOffset').on('value', snap =&gt; serverOffset = snap.val());</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>db.child('extraTimeRequestedBy').on('value', snap =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const request = snap.val();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById('requests').innerText = request ? `🚨 ${request} requested extra time!` : 'No extra time requests.';</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function startPhase(phaseName, minutes) {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const trueTime = Date.now() + serverOffset;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const ms = minutes * 60 * 1000;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>db.set({</p>
-<p class="p1"><span class="Apple-converted-space">        </span>currentPhase: phaseName,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>endTime: trueTime + ms,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>isRunning: true,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>extraTimeRequestedBy: ""<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">      </span>});</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function addExtraTime(seconds) {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>db.once('value').then(snap =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const state = snap.val();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if(state &amp;&amp; state.isRunning) {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>db.update({<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>endTime: state.endTime + (seconds * 1000),</p>
-<p class="p1"><span class="Apple-converted-space">            </span>extraTimeRequestedBy: ""<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">          </span>});</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>});</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function stopTimer() {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>db.update({ isRunning: false });</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+  <h1>OSCE Master Control</h1>
+  
+  <div id="controls">
+    <button class="phase-btn" onclick="startPhase('Reading', 2)">Start Reading (2m)</button>
+    <button class="phase-btn" onclick="startPhase('Session', 8)">Start Session (8m)</button>
+    <button class="phase-btn" onclick="startPhase('Feedback', 2)">Start Feedback (2m)</button>
+    <button class="phase-btn" onclick="startPhase('Moving', 1.5)">Start Moving (1.5m)</button>
+  </div>
+  
+  <hr style="margin: 30px auto; width: 80%; border-top: 1px solid #ccc;">
+  
+  <button class="action-btn" onclick="addExtraTime(30)">Approve +30s</button>
+  <button class="action-btn" style="background:#dc3545;" onclick="stopTimer()">Stop / Reset</button>
+
+  <div id="requests">No extra time requests.</div>
+
+  <script>
+    const firebaseConfig = { apiKey: "AIzaSyC1YUuGjJtPfKoUvjg3oZ9KWg2qiMCg5Ec", authDomain: "osce-timer-75bc3.firebaseapp.com", databaseURL: "https://osce-timer-75bc3-default-rtdb.asia-southeast1.firebasedatabase.app", projectId: "osce-timer-75bc3", storageBucket: "osce-timer-75bc3.firebasestorage.app", messagingSenderId: "1074792422880", appId: "1:1074792422880:web:893bd949b3e610b021df85", measurementId: "G-00NQP07LE2" };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database().ref('osce_timer');
+    
+    let serverOffset = 0;
+    firebase.database().ref('.info/serverTimeOffset').on('value', snap => serverOffset = snap.val());
+
+    db.child('extraTimeRequestedBy').on('value', snap => {
+      const request = snap.val();
+      document.getElementById('requests').innerText = request ? `🚨 ${request} requested extra time!` : 'No extra time requests.';
+    });
+
+    function startPhase(phaseName, minutes) {
+      db.set({ currentPhase: phaseName, endTime: Date.now() + serverOffset + (minutes * 60000), isRunning: true, extraTimeRequestedBy: "" });
+    }
+
+    function addExtraTime(seconds) {
+      db.once('value').then(snap => {
+        const state = snap.val();
+        if(state && state.isRunning) db.update({ endTime: state.endTime + (seconds * 1000), extraTimeRequestedBy: "" });
+      });
+    }
+
+    function stopTimer() { db.update({ isRunning: false }); }
+  </script>
 </body>
 </html>
