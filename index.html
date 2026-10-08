@@ -1,170 +1,62 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2775.1">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  <title>OSCE Station</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <style>
+    body { font-family: sans-serif; text-align: center; background: #111; color: white; padding-top: 10vh; margin: 0; height: 100vh; overflow: hidden; }
+    #phase { font-size: 2.5rem; color: #aaa; text-transform: uppercase; margin-bottom: 20px; }
+    #timer { font-size: 25vw; font-weight: bold; margin-bottom: 40px; }
+    button { padding: 20px 40px; font-size: 1.2rem; background: #dc3545; color: white; border: none; border-radius: 12px; cursor: pointer; }
+    #join-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #007bff; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 100; }
+    #join-screen button { background: white; color: #007bff; font-weight: bold; }
   </style>
 </head>
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;OSCE Station&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"&gt;&lt;/script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"&gt;&lt;/script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>body {<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">      </span>text-align: center;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: #111;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: white;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding-top: 10vh;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin: 0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>height: 100vh;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>box-sizing: border-box;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>overflow: hidden;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>#phase { font-size: 2.5rem; color: #aaa; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 2px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>#timer { font-size: 25vw; font-weight: bold; margin-bottom: 40px; font-variant-numeric: tabular-nums; line-height: 1; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>button { padding: 20px 40px; font-size: 1.2rem; background: #dc3545; color: white; border: none; border-radius: 12px; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3); transition: 0.2s;}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>button:active { transform: scale(0.95); }</p>
-<p class="p2"><span class="Apple-converted-space">    </span></p>
-<p class="p1"><span class="Apple-converted-space">    </span>@media (min-width: 768px) {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>#timer { font-size: 12rem; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>/* Full-screen overlay to unlock audio */</p>
-<p class="p1"><span class="Apple-converted-space">    </span>#join-screen {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>position: absolute; top: 0; left: 0; width: 100%; height: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: #007bff; display: flex; flex-direction: column;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>align-items: center; justify-content: center; z-index: 100;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>#join-screen h2 { margin-bottom: 30px; font-size: 2rem;}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>#join-screen button { background: white; color: #007bff; font-weight: bold; font-size: 1.5rem; padding: 25px 50px;}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- Audio Unlock Overlay --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="join-screen"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;h2&gt;OSCE Timer Portal&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;button onclick="joinAndUnlockAudio()"&gt;Tap to Join Station&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="phase"&gt;Waiting for Master&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="timer"&gt;00:00&lt;/div&gt;</p>
-<p class="p2"><span class="Apple-converted-space">  </span></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;button onclick="requestExtraTime()"&gt;Request Extra Time&lt;/button&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>// --- 1. FIREBASE SETUP ---</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const firebaseConfig = {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>apiKey: "AIzaSyC1YUuGjJtPfKoUvjg3oZ9KWg2qiMCg5Ec",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>authDomain: "osce-timer-75bc3.firebaseapp.com",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>databaseURL: "https://osce-timer-75bc3-default-rtdb.asia-southeast1.firebasedatabase.app",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>projectId: "osce-timer-75bc3",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>storageBucket: "osce-timer-75bc3.firebasestorage.app",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>messagingSenderId: "1074792422880",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>appId: "1:1074792422880:web:893bd949b3e610b021df85",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>measurementId: "G-00NQP07LE2"</p>
-<p class="p1"><span class="Apple-converted-space">    </span>};</p>
-<p class="p1"><span class="Apple-converted-space">    </span>firebase.initializeApp(firebaseConfig);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const db = firebase.database().ref('osce_timer');</p>
-<p class="p2"><span class="Apple-converted-space">    </span></p>
-<p class="p1"><span class="Apple-converted-space">    </span>let serverOffset = 0;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>firebase.database().ref('.info/serverTimeOffset').on('value', snap =&gt; serverOffset = snap.val());</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>// --- 2. AUDIO SYNTHESIS ENGINE ---</p>
-<p class="p1"><span class="Apple-converted-space">    </span>let audioCtx;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>let lastAlertedEndTime = 0; // Tracks if we've already beeped for this phase</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function joinAndUnlockAudio() {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>// Create audio context on user click</p>
-<p class="p1"><span class="Apple-converted-space">      </span>audioCtx = new (window.AudioContext || window.webkitAudioContext)();</p>
-<p class="p2"><span class="Apple-converted-space">      </span></p>
-<p class="p1"><span class="Apple-converted-space">      </span>// Play a silent note immediately to securely unlock iOS Safari</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const osc = audioCtx.createOscillator();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>osc.connect(audioCtx.destination);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>osc.start();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>osc.stop(audioCtx.currentTime + 0.01);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>// Hide overlay</p>
-<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById('join-screen').style.display = 'none';</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function playChime() {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if (!audioCtx) return;</p>
-<p class="p2"><span class="Apple-converted-space">      </span></p>
-<p class="p1"><span class="Apple-converted-space">      </span>// Synthesize a clean, professional "ding" chime</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const osc = audioCtx.createOscillator();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const gainNode = audioCtx.createGain();</p>
-<p class="p2"><span class="Apple-converted-space">      </span></p>
-<p class="p1"><span class="Apple-converted-space">      </span>osc.type = 'sine';</p>
-<p class="p1"><span class="Apple-converted-space">      </span>osc.frequency.setValueAtTime(800, audioCtx.currentTime); // High pitch start</p>
-<p class="p1"><span class="Apple-converted-space">      </span>osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.5); // Drop in pitch</p>
-<p class="p2"><span class="Apple-converted-space">      </span></p>
-<p class="p1"><span class="Apple-converted-space">      </span>gainNode.gain.setValueAtTime(1, audioCtx.currentTime);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1); // Fade out over 1 sec</p>
-<p class="p2"><span class="Apple-converted-space">      </span></p>
-<p class="p1"><span class="Apple-converted-space">      </span>osc.connect(gainNode);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>gainNode.connect(audioCtx.destination);</p>
-<p class="p2"><span class="Apple-converted-space">      </span></p>
-<p class="p1"><span class="Apple-converted-space">      </span>osc.start();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>osc.stop(audioCtx.currentTime + 1);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>// --- 3. STATE AND TIMER RENDER LOOP ---</p>
-<p class="p1"><span class="Apple-converted-space">    </span>let state = {};</p>
-<p class="p1"><span class="Apple-converted-space">    </span>db.on('value', snap =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>state = snap.val() || {};</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(!state.isRunning) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('timer').innerText = "00:00";</p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('phase').innerText = "Stopped";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>setInterval(() =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if (state.isRunning &amp;&amp; state.endTime) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const trueTime = Date.now() + serverOffset;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const timeLeftMs = state.endTime - trueTime;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>if (timeLeftMs &gt; 0) {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>document.getElementById('phase').innerText = state.currentPhase;</p>
-<p class="p2"><span class="Apple-converted-space">          </span></p>
-<p class="p1"><span class="Apple-converted-space">          </span>const minutes = Math.floor(timeLeftMs / 60000);</p>
-<p class="p1"><span class="Apple-converted-space">          </span>const seconds = Math.floor((timeLeftMs % 60000) / 1000);</p>
-<p class="p1"><span class="Apple-converted-space">          </span>document.getElementById('timer').innerText =<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>// TIME IS UP</p>
-<p class="p1"><span class="Apple-converted-space">          </span>document.getElementById('timer').innerText = "00:00";</p>
-<p class="p1"><span class="Apple-converted-space">          </span>document.getElementById('phase').innerText = "Time Up";</p>
-<p class="p2"><span class="Apple-converted-space">          </span></p>
-<p class="p1"><span class="Apple-converted-space">          </span>// Check if we already played the chime for this specific phase end-time</p>
-<p class="p1"><span class="Apple-converted-space">          </span>if (state.endTime !== lastAlertedEndTime) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>playChime();</p>
-<p class="p1"><span class="Apple-converted-space">            </span>lastAlertedEndTime = state.endTime; // Prevent infinite looping</p>
-<p class="p1"><span class="Apple-converted-space">          </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}, 100);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function requestExtraTime() {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const stationNum = prompt("Enter your Station Number:");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(stationNum) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>db.update({ extraTimeRequestedBy: `Station ${stationNum}` });</p>
-<p class="p1"><span class="Apple-converted-space">        </span>alert("Request sent to Master.");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+  <div id="join-screen"><h2>OSCE Timer Portal</h2><button onclick="joinAndUnlockAudio()">Tap to Join</button></div>
+  <div id="phase">Waiting for Master</div>
+  <div id="timer">00:00</div>
+  <button onclick="requestExtraTime()">Request Extra Time</button>
+
+  <script>
+    const firebaseConfig = { apiKey: "AIzaSyC1YUuGjJtPfKoUvjg3oZ9KWg2qiMCg5Ec", authDomain: "osce-timer-75bc3.firebaseapp.com", databaseURL: "https://osce-timer-75bc3-default-rtdb.asia-southeast1.firebasedatabase.app", projectId: "osce-timer-75bc3", storageBucket: "osce-timer-75bc3.firebasestorage.app", messagingSenderId: "1074792422880", appId: "1:1074792422880:web:893bd949b3e610b021df85", measurementId: "G-00NQP07LE2" };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database().ref('osce_timer');
+    let serverOffset = 0, audioCtx, lastAlertedEndTime = 0, state = {};
+    firebase.database().ref('.info/serverTimeOffset').on('value', snap => serverOffset = snap.val());
+    
+    function joinAndUnlockAudio() {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audioCtx.createOscillator(); osc.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.01);
+      document.getElementById('join-screen').style.display = 'none';
+    }
+    
+    function playChime() {
+      if (!audioCtx) return;
+      const osc = audioCtx.createOscillator(), gainNode = audioCtx.createGain();
+      osc.type = 'sine'; osc.frequency.setValueAtTime(800, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.5);
+      gainNode.gain.setValueAtTime(1, audioCtx.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1);
+      osc.connect(gainNode); gainNode.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 1);
+    }
+
+    db.on('value', snap => { state = snap.val() || {}; if(!state.isRunning) { document.getElementById('timer').innerText = "00:00"; document.getElementById('phase').innerText = "Stopped"; }});
+    
+    setInterval(() => {
+      if (state.isRunning && state.endTime) {
+        const timeLeftMs = state.endTime - (Date.now() + serverOffset);
+        if (timeLeftMs > 0) {
+          document.getElementById('phase').innerText = state.currentPhase;
+          document.getElementById('timer').innerText = String(Math.floor(timeLeftMs / 60000)).padStart(2, '0') + ':' + String(Math.floor((timeLeftMs % 60000) / 1000)).padStart(2, '0');
+        } else {
+          document.getElementById('timer').innerText = "00:00"; document.getElementById('phase').innerText = "Time Up";
+          if (state.endTime !== lastAlertedEndTime) { playChime(); lastAlertedEndTime = state.endTime; }
+        }
+      }
+    }, 100);
+
+    function requestExtraTime() { const num = prompt("Station Number:"); if(num) { db.update({ extraTimeRequestedBy: `Station ${num}` }); alert("Sent."); } }
+  </script>
 </body>
 </html>
